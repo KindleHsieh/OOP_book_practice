@@ -1,14 +1,16 @@
 from abc import ABC, abstractclassmethod
 from enum import Enum
 
-class Enum:
-    Book: 1
-    CD: 2
-    DVD: 3
-    Magazine: 4
+
+class paper(Enum):
+    Book = 1
+    CD = 2
+    DVD = 3
+    Magazine = 4
 
 
 class Catalog:
+
     def search(self, src, name):
         """
         src int:
