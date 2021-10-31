@@ -37,11 +37,39 @@ coroutine.(協程)
 '''
 
 ##################
-#    logging.    #
+#  log Analyze.  #
 ##################
 import re
 
+
 # search all rows and pass the row related with regex.
+def match_regex(filename, regex):
+    with open(filename) as file:
+        lines = file.readlines()
+    for line in reversed(lines):
+        match = re.match(regex, line)
+        if match:
+            regex = yield match.groups()[0]
+
 
 # Interactive with first def and suggest the right regex.
+def get_serials(filename):
+    ERROR_RE = 'XFS ERROR (\[sd[a-z]\])'
+    matcher = match_regex(filename, ERROR_RE)
+    device = next(matcher)
+    while True:
+        print('-'*36)
+        bus = matcher.send(
+            f'(sd \S+) {re.escape(device)}'
+        )
+        print(f'bus: {bus}')
+        serial = matcher.send(
+            f'{bus} \(SERIAL=([^)]*)\)'
+        )
+        print(f'serial: {serial}')
+        yield serial
+        device = matcher.send(ERROR_RE)
 
+
+for serial_number in get_serials('/Users/kindlemac/PycharmProjects/OOP_book_practice/9_Iterator_mode/EXAMPLE_LOG.log'):
+    print(serial_number)

@@ -62,5 +62,17 @@ class TemplateEngine:
 
 
 if __name__ == '__main__':
+    infilename = ""
+    outfilename = ""
+    contextfilename = {
+        "name": "Dusty",
+        "book_list": [
+            "Thief of Time",
+            "The Thief",
+            "Snow Crash",
+            "Lathe Of Heaven"
+        ]
+    }
+
     engine = TemplateEngine(infilename, outfilename, contextfilename)
     engine.process()
