@@ -16,7 +16,7 @@ class StatsList(list):
         # even.
         else:
             idx = int(len(self) / 2)
-            return (self[idx] + self[idx + 1]) / 2
+            return (self[idx] + self[idx - 1]) / 2
 
     def mode(self):
         freqs = defaultdict(int)

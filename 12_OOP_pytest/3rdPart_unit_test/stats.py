@@ -1,32 +1,33 @@
 # -*- coding: utf-8 -*-
 # author: Kindle Hsieh time: 2021/10/28
-
+from typing import List, Optional
 from collections import defaultdict
 
 
-class StatsList(list):
-    def mean(self):
-        return sum(self) / len(self)
+class StatsList(List[Optional[float]]):
+    def mean(self) -> float:
+        clean = list(filter(None, self))
+        return sum(clean) / len(clean)
 
-    def median(self):
+    def median(self) -> float:
+        clean = list(filter(None, self))
         # odd.
-        if len(self) % 2:
-            print(len(self) % 2)
-            return self[int(len(self) / 2)]
+        if len(clean) % 2:
+            return clean[len(clean) // 2]
         # even.
         else:
-            idx = int(len(self) / 2)
-            return (self[idx] + self[idx + 1]) / 2
+            idx = len(clean) // 2
+            return (clean[idx] + clean[idx - 1]) / 2
 
-    def mode(self):
-        freqs = defaultdict(int)
-        for item in self:
+    def mode(self) -> List[float]:
+        freqs: DefaultDict[float, int] = defaultdict(int)
+        for item in filter(None, self):
             freqs[item] += 1
         mode_freq = max(freqs.values())
-        modes = []
-        for item, value in freqs.items():
-            if value == mode_freq:
-                modes.append(item)
+        modes = [ item
+            for item, value in freqs.items()
+            if value == mode_freq
+        ]
         return modes
 
 
